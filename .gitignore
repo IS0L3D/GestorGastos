@@ -1,0 +1,26 @@
+# Entornos virtuales
+venv/
+backend/venv/
+
+# Django
+*.pyc
+__pycache__/
+*.sqlite3
+*.log
+.env
+.env.local
+
+# React
+frontend/node_modules/
+frontend/.env
+frontend/.eslintcache
+frontend/build/
+frontend/coverage/
+
+# IDE/Editor
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
