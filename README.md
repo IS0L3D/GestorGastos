@@ -1,21 +1,26 @@
 # Gestión de Gastos para Estudiantes
 
 ## Estructura del proyecto
-├── backend/       # Django API
-├── frontend/      # React App
+├── backend/       -> Django API
+├── frontend/      -> React App
 
 ### Entorno Virtual
-
+```bash
 python -m venv venv
-source venv/bin/activate  # Linux/Mac)
-venv\Scripts\activate    # Windows
+source venv/bin/activate  -> Linux/Mac
+venv\Scripts\activate    -> Windows
+```
 
 ### Backend
 1. Entrar en la Carpeta:
+```bash
 cd backend
+```
 
 2. Instalar dependencias:
+```bash
 pip install -r requirements.txt
+```
 
 3. Crear Base de Datos en MariaDB:
 ```bash
@@ -40,7 +45,6 @@ Y cambia "placeholder" por tu contraseña
 
 5. Ejecutar migraciones:
 ```bash
-python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 ```
@@ -58,5 +62,4 @@ npm install
 2. Iniciar aplicación:
 ```bash
 npm start
-```
 ```

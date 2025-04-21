@@ -14,14 +14,32 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('http://localhost:8000/api/login/', credentials);
-      if (response.data.access) {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
-        navigate('/dashboard');
-      }
+        const response = await api.post('/login/', credentials);
+        
+        if (response.data.access) {
+            localStorage.setItem('access_token', response.data.access);
+            localStorage.setItem('refresh_token', response.data.refresh);
+            
+            api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+            const configResponse = await api.get('/user/config-status/');
+            if (!configResponse.data.has_configured_budget) {
+                navigate('/setup');
+            } else {
+                navigate('/dashboard');
+            }
+        }
     } catch (err) {
-      setError('Credenciales inválidas');
+        let errorMessage = 'Error de conexión';
+        
+        if (err.response) {
+            if (err.response.status === 401) {
+                errorMessage = 'Credenciales inválidas';
+            } else if (err.response.status >= 500) {
+                errorMessage = 'Error del servidor';
+            }
+        }
+        
+        setError(errorMessage);
     }
   };
 

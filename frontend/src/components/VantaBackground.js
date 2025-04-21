@@ -13,7 +13,12 @@ const VantaBackground = () => {
       vantaEffect.destroy();
     }
 
-    const colorForPath = location.pathname === '/dashboard' ? 0x666666 : 0x65889;
+    const pathColors = {
+      '/dashboard': 0x4e8d7c,
+      '/setup': 0xc49f47,
+    };
+
+    const colorForPath = pathColors[location.pathname] || 0x3a6ea5;
 
     const newEffect = WAVES({
       THREE,

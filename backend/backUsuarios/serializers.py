@@ -4,6 +4,15 @@ from django.core.validators import RegexValidator
 from .models import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(
+        validators=[
+            RegexValidator(
+                regex='^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$',
+                message='Solo se permiten letras y espacios',
+                code='invalid_name'
+            )
+        ]
+    )
     email = serializers.EmailField(
         validators=[
             UniqueValidator(

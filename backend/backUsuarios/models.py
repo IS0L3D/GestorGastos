@@ -39,6 +39,7 @@ class CustomUser(AbstractUser):
             )
         ]
     )
+    has_configured_budget = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']

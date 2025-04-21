@@ -1,34 +1,38 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from backUsuarios.models import CustomUser
+from django.db.models import Q
+from decimal import Decimal
 
 class Categoria(models.Model):
     PREDEFINIDAS = [
         ('Alimentación', 'Alimentación'),
+        ('Hospedaje', 'Hospedaje'),
         ('Transporte', 'Transporte'),
-        ('Educación', 'Educación'),
-        ('Ocio', 'Ocio'),
+        ('Colegiatura', 'Colegiatura'),
+        ('Materiales', 'Materiales'),
         ('Salud', 'Salud'),
+        ('Ocio', 'Ocio'),
     ]
     
     nombre = models.CharField('Nombre', max_length=50, choices=PREDEFINIDAS, blank=True)
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
-    personalizada = models.CharField('Personalizada', max_length=50, blank=True)
+    personalizada = models.CharField('Personalizada', max_length=50, blank=True, null=True)
     es_predefinida = models.BooleanField('Predefinida', default=False)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
                 fields=['usuario', 'nombre'],
-                name='unique_predefinida_usuario'
+                name='unique_predefinida_usuario',
+                condition=Q(es_predefinida=True),
             ),
             models.UniqueConstraint(
                 fields=['usuario', 'personalizada'],
-                name='unique_personalizada_usuario'
-            )
+                name='unique_personalizada_usuario',
+                condition=Q(es_predefinida=False),
+            ),
         ]
-        verbose_name = 'Categoría'
-        verbose_name_plural = 'Categorías'
 
     def __str__(self):
         return self.nombre if self.es_predefinida else self.personalizada
@@ -36,7 +40,7 @@ class Categoria(models.Model):
 class Presupuesto(models.Model):
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    monto = models.DecimalField('Monto', max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
+    monto = models.DecimalField('Monto', max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     periodo = models.CharField('Periodo', max_length=20, default='mensual')
 
     class Meta:
@@ -52,7 +56,7 @@ class Recurrencia(models.Model):
 
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     tipo = models.CharField('Tipo', max_length=10, choices=TIPO_CHOICES)
-    monto = models.DecimalField('Monto', max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
+    monto = models.DecimalField('Monto', max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True)
     frecuencia = models.CharField('Frecuencia', max_length=10, choices=FRECUENCIA_CHOICES)
     proxima_fecha = models.DateField('Próxima fecha')
