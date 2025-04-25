@@ -1,0 +1,121 @@
+
+body {
+    background: linear-gradient(120deg, #f6d365, #fda085);
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .auth-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem 3rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    max-width: 400px;
+    width: 90%;
+    margin: 3rem auto;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  
+  /* Estilo para el título */
+  .form-title {
+    color: #2c3e50;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  /* Espaciado y distribución de campos del formulario */
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; /* Incrementa para separar mejor cada sección */
+  }
+  
+  /* Estilos para los controles, agregando transiciones para el foco */
+  .form-control {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+  
+  /* Botón principal */
+  .auth-button {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .auth-button:hover {
+    background: linear-gradient(45deg, #2980b9, #3498db);
+    transform: scale(1.02);
+  }
+  
+  /* Botón de registro con estilo diferenciado */
+  .register-button-l {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 10px 20px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #f6d365, #fda085);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    text-align: center;
+  }
+  
+  .register-button-l:hover {
+    background: linear-gradient(45deg, #fda085, #f6d365);
+    transform: scale(1.02);
+  }
+  
+
+  .form-group {
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+  }
+  
+  .form-label {
+    flex: 0 0 120px; 
+    text-align: right; 
+  }
+  
+  .form-control {
+    flex: 1; 
+  }
+  
+
+  /* Contenedor para el campo de contraseña y el ícono */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center; /* Centra verticalmente el ícono */
+  width: 100%;
+}
+
+/* Estilos para el botón de alternar la visibilidad */
+.toggle-password {
+  position: absolute;
+  right: 10px;         /* Posición a la derecha dentro del contenedor */
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+}

@@ -1,0 +1,133 @@
+/* Contenedor principal */
+.register-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem 3rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    max-width: 600px;  /* Aumentado de 450px a 600px */
+    width: 90%;
+    margin: 3rem auto;
+    transition: box-shadow 0.3s ease;
+}
+  
+/* Título */
+.register-title {
+    color: #2c3e50;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+}
+  
+/* Organización de los elementos del formulario */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+  
+/* Alineación horizontal para campos inline */
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+  
+.form-label {
+    flex: 0 0 120px;
+    text-align: right;
+    font-weight: bold;
+}
+  
+
+  
+/* Asegura el comportamiento de wrap para el grupo de contraseña */
+.password-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap; 
+}
+  
+
+.password-group > .password-container {
+    flex: 1;
+}
+  
+
+.password-group > .password-hint {
+    flex-basis: 100%;
+    margin-left: calc(120px + 15px); 
+    text-align: left;
+}
+  
+
+.password-container {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+  
+.password-input {
+    width: 100%;
+    padding-right: 40px;
+}
+  
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+}
+  
+/* Mensaje de requisitos de contraseña */
+.password-hint {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 5px;
+}
+  
+/* Botón de registro */
+.register-button {
+    width: 70%;
+    padding: 12px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #f6d365, #fda085);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: block; 
+    margin: 0.5rem auto; 
+}
+  
+.register-button:hover {
+    background: linear-gradient(45deg, #fda085, #f6d365);
+    transform: scale(1.02);
+}
+
+
+/* Botón de login con estilo similar pero en gradiente azul */
+.login-button {
+    width: 70%;
+    padding: 12px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: block; 
+    margin: 0.5rem auto; 
+}
+  
+.login-button:hover {
+    background: linear-gradient(45deg, #2980b9, #3498db);
+    transform: scale(1.02);
+}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { Button, Form, Container, Alert } from 'react-bootstrap';
+import './Register.css'; // Importamos los estilos
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,13 +10,14 @@ const Register = () => {
     email: '',
     password: ''
   });
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar la contraseña
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-    useEffect(() => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-    }, []);
+  useEffect(() => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,23 +33,20 @@ const Register = () => {
       if (errorData) {
         if (errorData.detail) {
           errorMessage = errorData.detail;
-        }
-        else if (errorData.email) {
+        } else if (errorData.email) {
           errorMessage = `Email: ${errorData.email[0]}`;
-        }
-        else if (errorData.password) {
+        } else if (errorData.password) {
           errorMessage = `Contraseña: ${errorData.password[0]}`;
-        }
-        else {
-            const messages = [];
-            for (const key in errorData) {
+        } else {
+          const messages = [];
+          for (const key in errorData) {
             if (Array.isArray(errorData[key])) {
-                messages.push(`${key}: ${errorData[key].join(', ')}`);
+              messages.push(`${key}: ${errorData[key].join(', ')}`);
             } else {
-                messages.push(`${key}: ${errorData[key]}`);
+              messages.push(`${key}: ${errorData[key]}`);
             }
-            }
-            errorMessage = messages.join(' | ');
+          }
+          errorMessage = messages.join(' | ');
         }
       }
       
@@ -56,12 +55,13 @@ const Register = () => {
   };
 
   return (
-    <Container className="mt-5" style={{ maxWidth: '400px' }}>
-      <h2>Registro de Usuario</h2>
+    <Container className="register-container">
+      <h2 className="register-title">Registro de Usuario</h2>
       {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Nombre</Form.Label>
+      
+      <Form onSubmit={handleSubmit} className="register-form">
+        <Form.Group className="form-group">
+          <Form.Label className="form-label">Nombre</Form.Label>
           <Form.Control
             type="text"
             required
@@ -69,8 +69,8 @@ const Register = () => {
           />
         </Form.Group>
         
-        <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
+        <Form.Group className="form-group">
+          <Form.Label className="form-label">Email</Form.Label>
           <Form.Control
             type="email"
             required
@@ -78,18 +78,35 @@ const Register = () => {
           />
         </Form.Group>
         
-        <Form.Group className="mb-3">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            required
-            minLength="8"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-          />
-          <Form.Text>Mínimo 8 caracteres, 1 mayúscula y 1 número</Form.Text>
-        </Form.Group>
+        <Form.Group className="form-group password-group">
+          <Form.Label className="form-label">Contraseña</Form.Label>
+          <div className="password-container">
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              required
+              minLength="8"
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="password-input"
+            />
+            <Button variant="link" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? "👁️" : "🙈"} {/* Ícono dentro del campo */}
+            </Button>
+          </div>
+          <span className="password-hint">Mínimo 8 caracteres, 1 mayúscula y 1 número</span>
+        </Form.Group>   
         
-        <Button variant="primary" type="submit">Registrarse</Button>
+        <Button className="register-button" variant="primary" type="submit">
+          Registrarse
+        </Button>
+
+        {/* Botón para iniciar sesión con diseño similar en azul */}
+        <Button 
+          className="login-button" 
+          variant="primary" 
+          onClick={() => navigate('/login')}
+        >
+          Iniciar Sesión
+        </Button>
       </Form>
     </Container>
   );
