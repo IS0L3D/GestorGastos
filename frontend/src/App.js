@@ -1,4 +1,5 @@
 // src/App.js
+import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import VantaBackground from './components/VantaBackground';
 import Login from './components/Login';

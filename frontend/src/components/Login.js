@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../api';
-import { Button, Form, Container, Alert } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom"
+import { Button, Form, Container, Alert, Card, Spinner } from "react-bootstrap"
+import api from "../api"
+import VantaBackground from "./VantaBackground"
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -9,10 +10,12 @@ const Login = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
         const response = await api.post('/login/', credentials);
         
@@ -40,39 +43,101 @@ const Login = () => {
         }
         
         setError(errorMessage);
+    } finally {
+        setLoading(false);
     }
   };
 
   return (
-    <Container className="auth-container">
-    <h2 className="form-title">Iniciar Sesión</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleLogin}>
-        <Form.Group className="mb-3">
-        <Form.Label className="fw-bold">Email</Form.Label>
-        <Form.Control
-            type="email"
-            required
-            className="form-control-lg"
-            placeholder="ejemplo@correo.com"
-            onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-        />
-        </Form.Group>
-        
-        <Form.Group className="mb-3">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            required
-            onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-          />
-        </Form.Group>
-        
-        <Button className="auth-button" variant="primary" type="submit">Ingresar</Button>
-        <Button variant="link" onClick={() => navigate('/register')}>
-          ¿No tienes cuenta? Regístrate
-        </Button>
-      </Form>
+    <Container className="d-flex align-items-center justify-content-center min-vh-100">
+      <div className="auth-container glass-effect fade-in">
+        <Card className="auth-card">
+          <Card.Body className="p-3 p-md-4">
+            <div className="text-center mb-3">
+              <h1 className="form-title">Bienvenido</h1>
+              <p className="form-subtitle">Inicia sesión para administrar tus finanzas</p>
+            </div>
+
+            {error && (
+              <Alert variant="danger" className="auth-alert">
+                <div className="d-flex align-items-center">
+                  <i className="bi bi-exclamation-circle-fill me-2"></i>
+                  <span>{error}</span>
+                </div>
+              </Alert>
+            )}
+
+            <Form onSubmit={handleLogin} className="auth-form">
+              <div className="form-group">
+                <label className="form-label">Correo electrónico</label>
+                <input
+                  type="email"
+                  required
+                  className="form-control-lg"
+                  placeholder="ejemplo@correo.com"
+                  onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Contraseña</label>
+                <input
+                  type="password"
+                  required
+                  className="form-control-lg"
+                  placeholder="••••••••"
+                  onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="d-flex justify-content-end mb-3">
+                <a href="#" className="password-reset-link">
+                  ¿Olvidaste tu contraseña?
+                </a>
+              </div>
+
+              <Button 
+                className="auth-button" 
+                variant="primary" 
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                    Iniciando sesión...
+                  </>
+                ) : (
+                  'Iniciar sesión'
+                )}
+              </Button>
+
+              <div className="register-section">
+                <p className="register-text">
+                  ¿No tienes cuenta?{" "}
+                  <button 
+                    type="button"
+                    className="register-button" 
+                    onClick={() => navigate("/register")}
+                    disabled={loading}
+                  >
+                    Regístrate
+                  </button>
+                </p>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </div>
     </Container>
   );
 };

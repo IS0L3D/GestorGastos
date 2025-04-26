@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { Container, Form, Button, Alert, Row, Col, InputGroup } from 'react-bootstrap';
-import { PlusCircle, Sliders } from 'react-bootstrap-icons';
+import { PlusCircle, Sliders, Wallet, Tag, Plus } from 'react-bootstrap-icons';
 
 const Setup = () => {
     const navigate = useNavigate();
@@ -77,136 +77,145 @@ const Setup = () => {
     };
 
     return (
-        <Container className="setup-container py-5">
-            <h1 className="mb-4">🏁 Configuración Inicial</h1>
-            
-            <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-4">
-                    <Form.Label className="h4">
-                        💰 Presupuesto Mensual Total
-                    </Form.Label>
-                    <InputGroup>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-                            type="number"
-                            min="0.01"
-                            step="0.01"
-                            required
-                            value={totalBudget || ''}
-                            onChange={(e) => setTotalBudget(parseFloat(e.target.value))}
-                            placeholder="Ej: 1500.00"
-                        />
-                    </InputGroup>
-                </Form.Group>
-
-                <div className="mb-5">
-                    <h4 className="mb-3">📦 Categorías Predefinidas</h4>
-                    {predefinedCats.map((cat, index) => (
-                        <div key={cat.name} className="mb-3">
-                            <Form.Label>
-                                {cat.name} - ${cat.allocated.toFixed(2)}
-                                <span className="text-muted ms-2">
-                                    ({(totalBudget ? (cat.allocated / totalBudget * 100).toFixed(1) : 0)}%)
-                                </span>
-                            </Form.Label>
-                            <Form.Range
-                                value={cat.allocated}
-                                min="0"
-                                max={cat.allocated + remainingBudget}
-                                step="0.01"
-                                onChange={(e) => handleSliderChange('predefined', index, e.target.value)}
-                                disabled={!totalBudget}
-                            />
+        <Container className="d-flex align-items-center justify-content-center min-vh-100">
+            <div className="auth-container glass-effect fade-in">
+                <h1 className="setup-title">🏁 Configuración Inicial</h1>
+                <p className="setup-subtitle">Configura tu presupuesto mensual y categorías de gastos</p>
+                
+                {error && (
+                    <Alert variant="danger" className="auth-alert">
+                        <div className="d-flex align-items-center">
+                            <i className="bi bi-exclamation-circle-fill me-2"></i>
+                            <span>{error}</span>
                         </div>
-                    ))}
-                </div>
+                    </Alert>
+                )}
 
-                <div className="mb-5">
-                    <h4 className="mb-3">✨ Categorías Personalizadas</h4>
-                    <div className="mb-3">
-                        <InputGroup>
+                <Form onSubmit={handleSubmit}>
+                    <div className="setup-section">
+                        <h2 className="setup-section-title">
+                            <Wallet className="me-2" />
+                            Presupuesto Mensual Total
+                        </h2>
+                        <div className="setup-input-group">
+                            <InputGroup>
+                                <InputGroup.Text>$</InputGroup.Text>
+                                <Form.Control
+                                    type="number"
+                                    min="0.01"
+                                    step="0.01"
+                                    required
+                                    value={totalBudget || ''}
+                                    onChange={(e) => setTotalBudget(parseFloat(e.target.value))}
+                                    placeholder="Ej: 1500.00"
+                                    className="form-control-lg"
+                                />
+                            </InputGroup>
+                        </div>
+                    </div>
+
+                    <div className="setup-section">
+                        <h2 className="setup-section-title">
+                            <Tag className="me-2" />
+                            Categorías Predefinidas
+                        </h2>
+                        {predefinedCats.map((cat, index) => (
+                            <div key={cat.name} className="setup-slider-container">
+                                <div className="setup-slider-label">
+                                    <span>{cat.name}</span>
+                                    <div>
+                                        <span className="amount">${cat.allocated.toFixed(2)}</span>
+                                        <span className="percentage ms-2">
+                                            ({(totalBudget ? (cat.allocated / totalBudget * 100).toFixed(1) : 0)}%)
+                                        </span>
+                                    </div>
+                                </div>
+                                <input
+                                    type="range"
+                                    className="setup-slider"
+                                    value={cat.allocated}
+                                    min="0"
+                                    max={cat.allocated + remainingBudget}
+                                    step="0.01"
+                                    onChange={(e) => handleSliderChange('predefined', index, e.target.value)}
+                                    disabled={!totalBudget}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="setup-section">
+                        <h2 className="setup-section-title">
+                            <Plus className="me-2" />
+                            Categorías Personalizadas
+                        </h2>
+                        <div className="setup-custom-category">
                             <Form.Control
                                 type="text"
                                 value={newCustomCat}
                                 onChange={(e) => setNewCustomCat(e.target.value)}
                                 placeholder="Nueva categoría (Ej: Gym)"
                                 disabled={!totalBudget}
+                                className="form-control-lg"
                             />
                             <Button 
                                 variant="outline-primary" 
                                 onClick={handleAddCustomCat}
                                 disabled={!newCustomCat.trim() || !totalBudget}
+                                className="d-flex align-items-center"
                             >
                                 <PlusCircle className="me-2" />
                                 Agregar
                             </Button>
-                        </InputGroup>
+                        </div>
+
+                        {customCats.map((cat, index) => (
+                            <div key={cat.name} className="setup-slider-container">
+                                <div className="setup-slider-label">
+                                    <span>{cat.name}</span>
+                                    <div>
+                                        <span className="amount">${cat.allocated.toFixed(2)}</span>
+                                        <span className="percentage ms-2">
+                                            ({(totalBudget ? (cat.allocated / totalBudget * 100).toFixed(1) : 0)}%)
+                                        </span>
+                                    </div>
+                                </div>
+                                <input
+                                    type="range"
+                                    className="setup-slider"
+                                    value={cat.allocated}
+                                    min="0"
+                                    max={cat.allocated + remainingBudget}
+                                    step="0.01"
+                                    onChange={(e) => handleSliderChange('custom', index, e.target.value)}
+                                />
+                            </div>
+                        ))}
                     </div>
 
-                    {customCats.map((cat, index) => (
-                        <div key={cat.name} className="mb-3">
-                            <Form.Label>
-                                {cat.name} - ${cat.allocated.toFixed(2)}
-                            </Form.Label>
-                            <Form.Range
-                                value={cat.allocated}
-                                min="0"
-                                max={cat.allocated + remainingBudget}
-                                step="0.01"
-                                onChange={(e) => handleSliderChange('custom', index, e.target.value)}
-                            />
+                    <div className="setup-summary">
+                        <h3 className="setup-summary-title">
+                            <Sliders className="me-2" />
+                            Resumen de asignación
+                        </h3>
+                        <div className="setup-summary-item">
+                            <span className="label">Total asignado:</span>
+                            <span className="value">${(totalBudget - remainingBudget).toFixed(2)}</span>
                         </div>
-                    ))}
-                </div>
-
-                <div className="summary-card p-4 mb-4 bg-light rounded">
-                    <Row>
-                        <Col md={6}>
-                            <h5 className="mb-3">📊 Resumen de asignación</h5>
-                            <div className="d-flex justify-content-between">
-                                <span>Total asignado:</span>
-                                <strong>${(totalBudget - remainingBudget).toFixed(2)}</strong>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <span>Presupuesto restante:</span>
-                                <strong className={remainingBudget !== 0 ? 'text-danger' : 'text-success'}>
-                                    ${remainingBudget.toFixed(2)}
-                                </strong>
-                            </div>
-                        </Col>
-                        <Col md={6} className="d-flex align-items-center">
-                            <Button 
-                                variant={Math.abs(remainingBudget) < 0.01 ? 'success' : 'secondary'} 
-                                type="submit"
-                                className="w-100 py-3"
-                                disabled={Math.abs(remainingBudget) >= 0.01 || !totalBudget}
-                            >
-                                <Sliders className="me-2" />
-                                {remainingBudget === 0 ? '✅ Completar Configuración' : 'Ajusta tu presupuesto'}
-                            </Button>
-                        </Col>
-                    </Row>
-                </div>
-
-                {error && <Alert variant="danger">{error}</Alert>}
-            </Form>
-
-            <style>{`
-                .setup-container {
-                    max-width: 800px;
-                    background: white;
-                    border-radius: 15px;
-                    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-                }
-                
-                .form-range::-webkit-slider-thumb {
-                    background: #0d6efd;
-                }
-                
-                .summary-card {
-                    border: 2px solid #dee2e6;
-                }
-            `}</style>
+                        <div className="setup-summary-item">
+                            <span className="label">Presupuesto restante:</span>
+                            <span className="value">{remainingBudget !== 0 ? '⚠️ ' : '✅ '}${remainingBudget.toFixed(2)}</span>
+                        </div>
+                        <Button 
+                            type="submit"
+                            className="setup-submit-button"
+                            disabled={Math.abs(remainingBudget) >= 0.01 || !totalBudget}
+                        >
+                            {remainingBudget === 0 ? '✅ Completar Configuración' : 'Ajusta tu presupuesto'}
+                        </Button>
+                    </div>
+                </Form>
+            </div>
         </Container>
     );
 };

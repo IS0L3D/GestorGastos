@@ -16,6 +16,8 @@ const VantaBackground = () => {
     const pathColors = {
       '/dashboard': 0x4e8d7c,
       '/setup': 0xc49f47,
+      '/login': 0x4f46e5,
+      '/register': 0x4f46e5,
     };
 
     const colorForPath = pathColors[location.pathname] || 0x3a6ea5;
@@ -31,6 +33,10 @@ const VantaBackground = () => {
       scale: 1.0,
       scaleMobile: 1.0,
       color: colorForPath,
+      shininess: 50.0,
+      waveHeight: 20.0,
+      waveSpeed: 0.75,
+      zoom: 0.75,
     });
 
     setVantaEffect(newEffect);
