@@ -5,11 +5,7 @@ import { Button, Form, Container, Alert } from 'react-bootstrap';
 import './Register.css'; // Importamos los estilos
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar la contraseña
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -29,7 +25,7 @@ const Register = () => {
     } catch (err) {
       const errorData = err.response?.data;
       let errorMessage = 'Error de registro';
-      
+
       if (errorData) {
         if (errorData.detail) {
           errorMessage = errorData.detail;
@@ -49,7 +45,7 @@ const Register = () => {
           errorMessage = messages.join(' | ');
         }
       }
-      
+
       setError(errorMessage);
     }
   };

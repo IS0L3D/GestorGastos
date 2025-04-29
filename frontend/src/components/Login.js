@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { Button, Form, Container, Alert } from 'react-bootstrap';
-import './Login.css'; 
+import './Login.css';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
   });
-  const [showPassword, setShowPassword] = useState(false); // Nuevo estado para mostrar/ocultar contraseña
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -31,7 +31,6 @@ const Login = () => {
       }
     } catch (err) {
       let errorMessage = 'Error de conexión';
-      
       if (err.response) {
         if (err.response.status === 401) {
           errorMessage = 'Credenciales inválidas';
@@ -39,23 +38,22 @@ const Login = () => {
           errorMessage = 'Error del servidor';
         }
       }
-      
       setError(errorMessage);
     }
   };
 
   return (
-    <Container className="auth-container">
-      <h2 className="form-title">Iniciar Sesión</h2>
+    <Container className="login-container">
+      <h2 className="login-form-title">Iniciar Sesión</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       
-      <Form onSubmit={handleLogin} className="auth-form">
-        <Form.Group className="form-group">
-          <Form.Label className="form-label">Email</Form.Label>
+      <Form onSubmit={handleLogin} className="login-form">
+        <Form.Group className="login-form-group">
+          <Form.Label className="login-form-label">Email</Form.Label>
           <Form.Control
             type="email"
             required
-            className="form-control-lg"
+            className="login-form-control"
             placeholder="ejemplo@correo.com"
             onChange={(e) =>
               setCredentials({ ...credentials, email: e.target.value })
@@ -63,19 +61,20 @@ const Login = () => {
           />
         </Form.Group>
 
-        <Form.Group className="form-group">
-          <Form.Label className="form-label">Contraseña</Form.Label>
-          <div className="password-container">
+        <Form.Group className="login-form-group">
+          <Form.Label className="login-form-label">Contraseña</Form.Label>
+          <div className="login-password-container">
             <Form.Control
               type={showPassword ? "text" : "password"}
               required
+              className="login-form-control"
               onChange={(e) =>
                 setCredentials({ ...credentials, password: e.target.value })
               }
             />
             <Button
               variant="link"
-              className="toggle-password"
+              className="login-toggle-password"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? "👁️" : "🙈"}
@@ -83,11 +82,11 @@ const Login = () => {
           </div>
         </Form.Group>
         
-        <Button className="auth-button" variant="primary" type="submit">
+        <Button className="login-submit-button" variant="primary" type="submit">
           Ingresar
         </Button>
         <Button
-          className="register-button-l"
+          className="login-register-button"
           variant="link"
           onClick={() => navigate('/register')}
         >

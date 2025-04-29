@@ -1,0 +1,387 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body,
+  html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  
+  :root {
+    --main-title-color: #fdc13f;       
+    --slider-thumb-color: #fdc13f;  
+  }
+  
+
+  /* CONTENEDOR PRINCIPAL */
+  .setup-container {
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  
+  .grid-wrapper {
+    background: rgba(255, 255, 255, 0.418);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Título principal dentro del grid-wrapper */
+  .main-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--main-title-color);
+    margin-bottom: 1.5rem;
+  }
+  
+  /* GRID INTERNO CON LAS SECCIONES */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  /* Cada "cuadrícula" o sección del grid */
+  .budget-group,
+  .predefined-categories,
+  .custom-categories,
+  .summary-card {
+    background: rgba(255, 255, 255, 0.8); /* Fondo blanco con transparencia */
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Hover effect para elevar la sección */
+  .budget-group:hover,
+  .predefined-categories:hover,
+  .custom-categories:hover,
+  .summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Personalización de los sliders (Webkit y Firefox) */
+  /* Webkit */
+  .form-range::-webkit-slider-thumb {
+    background-color: var(--slider-thumb-color);
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+  }
+  
+  /* Firefox */
+  .form-range::-moz-range-thumb {
+    background-color: var(--slider-thumb-color);
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+  }
+  
+  /* Responsive: para pantallas menores a 768px */
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+
+  /* Personalización del botón "Agregar" */
+.custom-add-button {
+    border: 2px solid #fdc13f;         
+    color: #fdc13f;                    
+    background-color: transparent;     
+    transition: all 0.3s ease;        
+  }
+  
+  .custom-add-button:hover {
+    color: #fff;                      
+    background-color: #fdc13f;         
+    border-color: #fdc13f;
+  }
+  
+
+/* Contenedor flexible para campo y botón */
+.custom-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+  }
+  
+  /* Opcional: ajuste del input y botón */
+  .custom-input-wrapper input {
+    flex: 1;
+  }
+  
+  .custom-add-button {
+    padding: 10px 15px;
+    font-size: 15px;
+  }
+  
+
+  .trash-icon {
+    font-size: 1.2rem; 
+    color: #dc3545;    
+  }
+  
+  .category-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    margin-bottom: 15px; 
+    
+  }
+  
+  .category-left {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+  }
+  
+  .category-label {
+    white-space: nowrap; 
+  }
+  
+  .category-list {
+    margin-top: 20px; 
+  }
+  
+
+  /* Mejoras para el contenedor principal del grupo de presupuesto */
+.budget-group {
+  background: linear-gradient(145deg, #ffffff, #f5f5f5); 
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+}
+
+/* Efecto hover para darle una sensación interactiva */
+.budget-group:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para el label del presupuesto */
+.budget-group .form-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+/* Estilo para el texto del InputGroup (el signo '$') */
+.budget-group .input-group .input-group-text {
+  background-color: #fdc13f;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+.budget-group .input-group {
+  display: flex;
+  align-items: stretch; 
+  margin-top: 1rem;
+}
+
+
+.budget-group .input-group .input-group-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem; 
+  font-size: 1rem;
+  height: 100%;             
+  border: 1px solid #ccc;   
+  background-color: #222;   
+  color: #fff;
+  border-right: none;       
+}
+
+
+.budget-group .input-group .form-control {
+  flex: 1;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-left: none;       
+}
+
+/* Estilo general de la tarjeta de resumen */
+.summary-card {
+  background: linear-gradient(145deg, #ffffff, #f9f9f9); 
+  padding: 2rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+
+.summary-item:last-child {
+  margin-bottom: 0;
+}
+
+
+.divider {
+  border-top: 1px dashed #ccc;
+  margin: 1rem 0;
+}
+
+.summary-card button {
+  background: linear-gradient(135deg, #fdc13f, #ff9b00); 
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Efecto hover */
+.summary-card button:hover {
+  background: linear-gradient(135deg, #ff9b00, #fdc13f);
+  transform: scale(1.05);
+}
+
+
+.summary-item:first-child {
+  margin-top: 1rem; 
+}
+
+.summary-card .d-flex.align-items-center {
+  margin-top: 1rem; 
+}
+
+
+
+.form-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(
+    to right,
+    #ffd700 0%,
+    #ffd700 var(--progress, 0%),
+    #fff2aa var(--progress, 0%),
+    #fff2aa 100%
+  );
+  outline: none;
+  transition: background 0.2s ease-in-out;
+}
+
+/* Thumb en navegadores basados en WebKit (Chrome, Safari) */
+.form-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -6px; /* centra verticalmente el thumb */
+  border-radius: 50%;
+  background: #ffd700;
+  border: 2px solid #e6c200;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.form-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+/* Estilo para Firefox */
+
+/* Pista del slider */
+.form-range::-moz-range-track {
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(
+    to right,
+    #ffd700 0%,
+    #ffd700 var(--progress, 0%),
+    #fff2aa var(--progress, 0%),
+    #fff2aa 100%
+  );
+}
+
+/* Thumb de Firefox */
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffd700;
+  border: 2px solid #e6c200;
+  cursor: pointer;
+}
+
+/* Para Internet Explorer y Edge Legacy */
+.form-range::-ms-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.form-range::-ms-fill-lower {
+  background: #ffd700;
+  border-radius: 5px;
+}
+
+.form-range::-ms-fill-upper {
+  background: #fff2aa;
+  border-radius: 5px;
+}
+
+.form-range::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffd700;
+  border: 2px solid #e6c200;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.form-range:focus::-ms-fill-lower,
+.form-range:focus::-ms-fill-upper {
+  background: transparent;
+}
+
+
+.custom-category-input {
+  border: 2px solid #f3ca13;
+  border-radius: 0.5rem;
+  padding: 1rem 1rem;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.custom-category-input:focus {
+  border-color: #fadb4f;
+  box-shadow: 0 0 8px rgba(255, 251, 0, 0.863);
+}
