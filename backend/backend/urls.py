@@ -1,12 +1,7 @@
-from django.urls import path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-from backUsuarios.views import RegisterView
-from backUsuarios.views import ConfigStatusView
-from backPresupuestos.views import InitialSetupView
-from backPresupuestos.views import DashboardView
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from backUsuarios.views import RegisterView, ConfigStatusView
+from backPresupuestos.views import InitialSetupView, DashboardView
 
 urlpatterns = [
     path('api/register/', RegisterView.as_view(), name='register'),
@@ -15,4 +10,5 @@ urlpatterns = [
     path('api/user/config-status/', ConfigStatusView.as_view(), name='config-status'),
     path('api/presupuestos/initial-setup/', InitialSetupView.as_view(), name='initial-setup'),
     path('api/presupuestos/dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('api/transacciones/', include('backTransacciones.urls')),
 ]
