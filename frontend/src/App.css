@@ -4,6 +4,8 @@
 :root {
   --primary-color: #4f46e5;
   --primary-hover: #4338ca;
+  --setup-color:   #6247aa;  /* 0x6247AA */
+  --setup-hover:   #533b94; 
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --danger-color: #ef4444;
@@ -291,7 +293,7 @@ body {
 
 /* Glass morphism effect */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.65) !important;
   backdrop-filter: blur(10px) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
@@ -323,10 +325,9 @@ body {
 }
 
 .dashboard-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 1.5rem;
   transition: all 0.3s ease;
@@ -559,11 +560,14 @@ body {
   margin-bottom: 0.25rem;
   font-weight: 700;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, #fbbf24, #d97706);
+  background: linear-gradient(135deg, var(--setup-color), var(--setup-hover));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
 }
+
+
+
 
 .setup-subtitle {
   color: var(--text-secondary);
@@ -594,6 +598,7 @@ body {
   background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(251, 191, 36, 0));
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none; 
 }
 
 .setup-section:hover {
@@ -608,7 +613,7 @@ body {
 .setup-section-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--setup-color);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -617,7 +622,7 @@ body {
 }
 
 .setup-section-title i {
-  color: #fbbf24;
+  color: var(--setup-color);
 }
 
 .setup-input-group {
@@ -637,6 +642,7 @@ body {
   font-size: 1.125rem;
   font-weight: 500;
   color: var(--text-primary);
+  padding: 10px;
 }
 
 .setup-input-group .form-control:focus {
@@ -645,7 +651,7 @@ body {
 }
 
 .setup-input-group .form-control:focus + .input-group-text {
-  border-color: #fbbf24;
+  border-color: var(--setup-color);
 }
 
 .setup-slider-container {
@@ -664,7 +670,7 @@ body {
 
 .setup-slider-label .amount {
   font-weight: 600;
-  color: #fbbf24;
+  color: var(--setup-color);
 }
 
 .setup-slider-label .percentage {
@@ -691,7 +697,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #fbbf24, #d97706);
+  background: linear-gradient(90deg, var(--setup-color), var(--setup-hover));
   border-radius: 3px;
   opacity: 0.3;
 }
@@ -700,7 +706,7 @@ body {
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  background: #fbbf24;
+  background: var(--setup-color);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -715,7 +721,7 @@ body {
 .setup-slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
-  background: #fbbf24;
+  background: var(--setup-color);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -746,11 +752,12 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #fbbf24, #d97706);
+  background: linear-gradient(135deg, var(--setup-color), var(--setup-hover));
   border: none;
   color: white;
   transition: all 0.3s ease;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .setup-custom-category .btn:hover {
@@ -766,7 +773,7 @@ body {
 }
 
 .setup-summary {
-  background: linear-gradient(135deg, #fbbf24, #d97706);
+  background: linear-gradient(135deg, var(--setup-color), var(--setup-hover));
   color: white;
   border-radius: var(--radius);
   padding: 1.5rem;
@@ -831,7 +838,7 @@ body {
   padding: 1rem;
   font-weight: 600;
   background: white;
-  color: #fbbf24;
+  color: var(--setup-color);
   border: none;
   border-radius: var(--radius);
   transition: all 0.3s ease;

@@ -301,7 +301,7 @@ const Dashboard = () => {
           </div>
 
           <div className="dashboard-grid">
-            <div className="dashboard-card chart-card glass-effect">
+            <div className="dashboard-card chart-card">
               <div className="card-header">
                 <FiPieChart className="card-icon"/>
                 <h2>Distribución</h2>
@@ -311,7 +311,7 @@ const Dashboard = () => {
                 <Doughnut ref={doughnutChartRef} data={doughnutData}/>
               </div>
             </div>
-            <div className="dashboard-card chart-card glass-effect">
+            <div className="dashboard-card chart-card">
               <div className="card-header">
                 <FiBarChart2 className="card-icon"/>
                 <h2>Asignado vs Gastado</h2>
@@ -348,134 +348,3 @@ const Dashboard = () => {
 
 
 export default Dashboard;
-
-/* ---------------------------------------------------
-   Modal para Agregar Gasto
---------------------------------------------------- */
-const ExpenseModal = ({ categories = [], onClose, onSubmit }) => {
-  const [categoriaId, setCategoriaId] = useState(categories[0]?.id || '');
-  const [monto, setMonto] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  // Inicializamos la fecha con la fecha actual en formato "YYYY-MM-DD"
-  const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Incluimos el campo 'fecha' en el objeto que se envía
-    const expenseData = {
-      categoriaId,
-      monto: parseFloat(monto),
-      descripcion,
-      fecha
-    };
-    onSubmit(expenseData);
-  };
-
-  return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2>Agregar Gasto</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Categoría:
-            <select value={categoriaId} onChange={(e) => setCategoriaId(e.target.value)}>
-              {categories.map(cat => (
-                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Monto:
-            <input 
-              type="number" 
-              step="0.01" 
-              value={monto} 
-              onChange={(e) => setMonto(e.target.value)} 
-              required
-            />
-          </label>
-          <label>
-            Descripción:
-            <input 
-              type="text" 
-              value={descripcion} 
-              onChange={(e) => setDescripcion(e.target.value)} 
-            />
-          </label>
-          <label>
-            Fecha:
-            <input 
-              type="date" 
-              value={fecha} 
-              onChange={(e) => setFecha(e.target.value)} 
-              required
-            />
-          </label>
-          <div className="modal-actions">
-            <button type="submit">Registrar Gasto</button>
-            <button type="button" onClick={onClose}>Cancelar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-/* ---------------------------------------------------
-   Modal para Agregar Ingreso
---------------------------------------------------- */
-const IncomeModal = ({ categories, onClose, onSubmit }) => {
-  const [categoriaId, setCategoriaId] = useState(categories[0]?.id || '');
-  const [monto, setMonto] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const incomeData = {
-      categoriaId,
-      monto: parseFloat(monto),
-      descripcion
-    };
-    onSubmit(incomeData);
-  };
-
-  return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2>Agregar Ingreso</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Categoría:
-            <select value={categoriaId} onChange={(e) => setCategoriaId(e.target.value)}>
-              {categories.map(cat => (
-                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Monto:
-            <input 
-              type="number" 
-              step="0.01" 
-              value={monto} 
-              onChange={(e) => setMonto(e.target.value)} 
-              required
-            />
-          </label>
-          <label>
-            Descripción:
-            <input 
-              type="text" 
-              value={descripcion} 
-              onChange={(e) => setDescripcion(e.target.value)} 
-            />
-          </label>
-          <div className="modal-actions">
-            <button type="submit">Registrar Ingreso</button>
-            <button type="button" onClick={onClose}>Cancelar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};

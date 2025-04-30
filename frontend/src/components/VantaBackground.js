@@ -14,11 +14,13 @@ const VantaBackground = () => {
     }
 
     const pathColors = {
-      '/dashboard': 0x4e8d7c,
-      '/setup': 0xc49f47,
+      '/dashboard': 0x5603AD,
+      '/setup':  0x6247AA, // <-- actualizado
       '/login': 0x4f46e5,
       '/register': 0x4f46e5,
+      '/': 0x4f46e5,
     };
+    
 
     const colorForPath = pathColors[location.pathname] || 0x3a6ea5;
 
