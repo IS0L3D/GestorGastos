@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'backUsuarios',
     'backPresupuestos',
     'backTransacciones',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -84,8 +85,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gestorgastos',
         'USER': 'root',
-        'PASSWORD': 'placeholder',
-        'HOST': 'localhost',
+        'PASSWORD': 'my-secret-pw',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -133,7 +134,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:3002",
 ]
 
 AUTH_USER_MODEL = 'backUsuarios.CustomUser'

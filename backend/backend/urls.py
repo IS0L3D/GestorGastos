@@ -7,6 +7,7 @@ from backUsuarios.views import RegisterView
 from backUsuarios.views import ConfigStatusView
 from backPresupuestos.views import InitialSetupView
 from backPresupuestos.views import DashboardView
+from backPresupuestos.views import generar_reporte_pdf
 
 urlpatterns = [
     path('api/register/', RegisterView.as_view(), name='register'),
@@ -15,4 +16,6 @@ urlpatterns = [
     path('api/user/config-status/', ConfigStatusView.as_view(), name='config-status'),
     path('api/presupuestos/initial-setup/', InitialSetupView.as_view(), name='initial-setup'),
     path('api/presupuestos/dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('api/presupuestos/pdf/', generar_reporte_pdf, name='reporte-pdf'),
+
 ]

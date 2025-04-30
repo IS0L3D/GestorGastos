@@ -90,6 +90,31 @@ const Setup = () => {
     const updatedCats = customCats.filter((_, i) => i !== index);
     setCustomCats(updatedCats);
   };
+  //generar pdf
+  const handleDownloadPDF = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await api.get('/presupuestos/pdf/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', // importante para recibir un archivo
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'reporte_gastos.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      setError('Error al generar el PDF.');
+    }
+  };
+
 
   return (
     <Container className="setup-container py-5">
@@ -221,6 +246,14 @@ const Setup = () => {
                     <Sliders className="me-2" />
                     {remainingBudget === 0 ? '✅ Completar Configuración' : 'Ajusta tu presupuesto'}
                   </Button>
+                  <Button
+                      variant="info"
+                      className="w-100 py-3 mt-3"
+                      onClick={handleDownloadPDF}
+                  >
+                    📄 Generar Reporte en PDF
+                  </Button>
+
                 </Col>
               </Row>
             </div>

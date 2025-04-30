@@ -10,6 +10,12 @@ from django.db.models import Sum, Case, When, Value, F, ExpressionWrapper
 from django.db.models.functions import Coalesce
 from django.db.models import DecimalField, CharField
 
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
@@ -142,3 +148,76 @@ class DashboardView(APIView):
         }
         
         return Response(data)
+
+# ------------------- Reporte PDF -------------------
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def generar_reporte_pdf(request):
+    user = request.user
+    current_month = timezone.now().month
+    current_year = timezone.now().year
+
+    presupuestos = Presupuesto.objects.filter(
+        usuario=user,
+        categoria__isnull=False
+    ).annotate(
+        categoria_nombre=Case(
+            When(categoria__es_predefinida=True, then=F('categoria__nombre')),
+            default=F('categoria__personalizada'),
+            output_field=CharField()
+        ),
+        gasto_total=Coalesce(
+            Sum(
+                Case(
+                    When(
+                        categoria__transaccion__fecha__month=current_month,
+                        categoria__transaccion__fecha__year=current_year,
+                        then=F('categoria__transaccion__monto')
+                    ),
+                    default=0,
+                    output_field=DecimalField()
+                )
+            ),
+            0
+        )
+    ).values('categoria_nombre', 'monto').annotate(
+        restante=ExpressionWrapper(
+            F('monto') - F('gasto_total'),
+            output_field=DecimalField()
+        )
+    )
+
+    total_asignado = sum(p['monto'] for p in presupuestos)
+    total_gastado = sum(p['monto'] - p['restante'] for p in presupuestos)
+    saldo_final = total_asignado - total_gastado
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporte_presupuesto.pdf"'
+
+    p = canvas.Canvas(response)
+    p.setFont("Helvetica", 12)
+    y = 800
+
+    p.drawString(100, y, f"📄 Reporte de Presupuesto - {user.username}")
+    y -= 30
+
+    for item in presupuestos:
+        gastado = item['monto'] - item['restante']
+        p.drawString(100, y,
+                     f"{item['categoria_nombre']}: Asignado ${item['monto']:.2f}, Gastado ${gastado:.2f}, Restante ${item['restante']:.2f}")
+        y -= 20
+        if y < 100:
+            p.showPage()
+            p.setFont("Helvetica", 12)
+            y = 800
+
+    y -= 20
+    p.drawString(100, y, f"Total Asignado: ${total_asignado:.2f}")
+    y -= 20
+    p.drawString(100, y, f"Total Gastado: ${total_gastado:.2f}")
+    y -= 20
+    p.drawString(100, y, f"Saldo Final: ${saldo_final:.2f}")
+
+    p.showPage()
+    p.save()
+    return response
