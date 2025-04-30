@@ -46,6 +46,10 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.setup-auth{
+  top:400px;
+}
+
 .auth-container:hover {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);

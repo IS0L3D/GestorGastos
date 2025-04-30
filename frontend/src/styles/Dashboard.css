@@ -117,6 +117,11 @@ html, body {
   cursor: pointer;
 }
 
+.dashboard-header-mobile h1,
+.sidebar-toggle {
+  color: #5603ad !important;
+}
+
 /* ==== CONTENEDOR PRINCIPAL ==== */
 .dashboard-container {
   flex: 1;
@@ -220,7 +225,7 @@ html, body {
   .sidebar-title { display: none; }
   .sidebar-button { justify-content: center; padding: 0.75rem 0; font-size: 0; }
   .sidebar-button svg { font-size: 1.5rem; }
-  .main-content { margin-left: var(--sidebar-collapsed-width); }
+  .dashboard-container {    width: calc(100vw - var(--sidebar-width) - 0rem); }
 }
 
 /* Móviles (≤768px) */
@@ -237,6 +242,11 @@ html, body {
   .main-content { margin: 0; padding-top: 4rem; }
   .dashboard-header-mobile { display: flex; }
   .no-mobile { display: none; }
+  .dashboard-container { width: calc(100vw - 5rem); border-radius: 15px; margin: 0, auto; position: absolute;
+    top: calc(30% - 2rem);}
+    .sidebar-button.logout {
+      width: calc(100% - 4rem);
+    }
 }
 
 /* Móviles muy pequeños (≤480px) */
@@ -249,3 +259,211 @@ html, body {
   .dashboard-chart-container { padding-bottom: 60%; }
   canvas { max-width: 100%; height: auto !important; }
 }
+
+/* ---------------------------------------------------
+   Estilos para los modales (overlay + contenido)
+--------------------------------------------------- */
+
+/* Variables globales */
+:root {
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --modal-bg: #ffffff;
+  --dashboard-color: #5603ad;
+  --dashboard-color-hover: #470092;
+  --secondary-bg: #f0f0f0;
+  --secondary-bg-hover: #d4d4d4;
+  --text-color: #333333;
+  --close-color: #666666;
+  --close-color-hover: #333333;
+  --border-radius: 12px;
+  --transition-fast: 0.2s ease-out;
+  --shadow-modal: 0 16px 32px rgba(0, 0, 0, 0.15);
+  --font-base: 'Inter', sans-serif;
+}
+
+/* Fondo semitransparente con blur */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Caja del modal */
+.modal-content {
+  background: var(--modal-bg);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: var(--shadow-modal);
+  position: relative;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideDown 0.4s var(--transition-fast) forwards;
+}
+
+@keyframes slideDown {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Tipografía general */
+.modal-content,
+.modal-content * {
+  font-family: var(--font-base);
+  color: var(--text-color);
+}
+
+/* Título */
+.modal-content h2 {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  color: var(--dashboard-color);
+}
+
+/* Formularios */
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Labels + Campos */
+.modal-content label {
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="date"],
+.modal-content select,
+.modal-content textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+  outline: none;
+  border-color: var(--dashboard-color);
+  box-shadow: 0 0 0 3px rgba(86, 3, 173, 0.15);
+}
+
+/* Textarea */
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Accesibilidad: foco visible */
+.modal-content button:focus,
+.modal-content input:focus {
+  outline-offset: 2px;
+}
+
+/* Botones de acción */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.modal-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-actions button:hover {
+  transform: translateY(-1px);
+}
+
+/* Botón principal */
+.modal-actions button[type="submit"] {
+  background: var(--dashboard-color);
+  color: #fff;
+}
+
+.modal-actions button[type="submit"]:hover {
+  background: var(--dashboard-color-hover);
+}
+
+/* Botón secundario */
+.modal-actions button[type="button"] {
+  background: var(--secondary-bg);
+  color: var(--text-color);
+}
+
+.modal-actions button[type="button"]:hover {
+  background: var(--secondary-bg-hover);
+}
+
+/* Botón de cerrar (la "X") */
+.modal-content .modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--close-color);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.modal-content .modal-close:hover {
+  color: var(--close-color-hover);
+  transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 320px) {
+  .modal-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .modal-content h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Animación de salida */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Clase que activa la animación */
+.fade-out {
+  animation: fadeOut 0.4s ease-in forwards;
+}
+
