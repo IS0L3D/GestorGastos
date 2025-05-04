@@ -2,6 +2,9 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from backUsuarios.views import RegisterView, ConfigStatusView
 from backPresupuestos.views import InitialSetupView, DashboardView
+from backTransacciones.views import IngresoView
+
+
 
 urlpatterns = [
     path('api/register/', RegisterView.as_view(), name='register'),

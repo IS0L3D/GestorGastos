@@ -211,19 +211,50 @@ const Dashboard = () => {
       })
       .catch(err => console.error(err));
   };
-  
-  
-  
-  
 
   const handleIncomeSubmit = (incomeData) => {
-    api.post('/presupuestos/ingreso/', incomeData)
-      .then(res => {
-        setDashboardData(res.data);
-        setShowIncomeModal(false);
-      })
-      .catch(err => console.error(err));
+    const token = localStorage.getItem("token");
+    const today = new Date().toISOString().split("T")[0];
+    const incomePayload = {
+          categoria: incomeData.categoriaId,
+          monto: parseFloat(incomeData.monto),
+          descripcion: incomeData.descripcion,
+          fecha: today,
+          tipo: 'Ingreso'
+      };
+
+    api.post('/transacciones/ingreso/',incomePayload, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+        .then(() => {
+          return api.get('/presupuestos/dashboard/', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+        })
+        .then(getRes => {
+          const updatedData = getRes.data;
+          const categorias = Array.isArray(updatedData.categorias) ? updatedData.categorias : [];
+          console.log("Datos actualizados del dashboard:", updatedData);
+            console.log("Datos enviados:", incomePayload); // aquí data debe incluir categoria_id
+            setDashboardData({ ...updatedData, categorias });
+          setShowIncomeModal(false);
+        })
+        .catch(err => {
+          if (err.response) {
+            console.error("Error status:", err.response.status);
+            console.error("Error data:", err.response.data);
+          } else {
+            console.error(err);
+          }
+        });
   };
+
+
+
 
   return (
     <div className="dashboard-wrapper">
