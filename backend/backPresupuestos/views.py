@@ -86,8 +86,8 @@ class DashboardView(APIView):
     def get(self, request):
         user = request.user
         current_month = timezone.now().month
-        current_year = timezone.now().year
-        
+        current_year  = timezone.now().year
+
         categorias_data = Presupuesto.objects.filter(
             usuario=user,
             categoria__isnull=False
@@ -101,41 +101,68 @@ class DashboardView(APIView):
                 Sum(
                     Case(
                         When(
+                            categoria__transaccion__tipo='Gasto',
                             categoria__transaccion__fecha__month=current_month,
                             categoria__transaccion__fecha__year=current_year,
                             then=F('categoria__transaccion__monto')
                         ),
-                        default=0,
+                        default=Value(0, output_field=DecimalField()),
                         output_field=DecimalField()
                     )
                 ),
-                0
+                Value(0, output_field=DecimalField())
+            ),
+            ingreso_total=Coalesce(
+                Sum(
+                    Case(
+                        When(
+                            categoria__transaccion__tipo='Ingreso',
+                            categoria__transaccion__fecha__month=current_month,
+                            categoria__transaccion__fecha__year=current_year,
+                            then=F('categoria__transaccion__monto')
+                        ),
+                        default=Value(0, output_field=DecimalField()),
+                        output_field=DecimalField()
+                    )
+                ),
+                Value(0, output_field=DecimalField())
             )
-        ).values('categoria', 'categoria_nombre', 'monto').annotate(
+        ).values(
+            'categoria',
+            'categoria_nombre',
+            'monto',
+            'gasto_total',
+            'ingreso_total'
+        ).annotate(
             restante=ExpressionWrapper(
-                F('monto') - F('gasto_total'),
+                F('monto') - F('gasto_total') + F('ingreso_total'),
                 output_field=DecimalField()
             )
         )
-        
-        total_presupuesto = sum(item['monto'] for item in categorias_data)
-        total_gastado = sum(item['monto'] - item['restante'] for item in categorias_data)
-        total_restante = total_presupuesto - total_gastado
-        
+
+        # Totales globales
+        total_ingresos    = sum(item['ingreso_total'] for item in categorias_data)
+        total_gastado     = sum(item['gasto_total'] for item in categorias_data)
+        total_presupuesto = sum(item['monto'] for item in categorias_data) + total_ingresos
+        total_restante    = total_presupuesto - total_gastado
+
         data = {
-            "total_presupuesto": total_presupuesto,
-            "total_gastado": total_gastado,
-            "total_restante": total_restante,
+            "total_presupuesto": float(total_presupuesto),
+            "total_gastado":     float(total_gastado),
+            "total_ingresos":    float(total_ingresos),
+            "total_restante":    float(total_restante),
             "categorias": [
                 {
-                    "id": item['categoria'],
-                    "nombre": item['categoria_nombre'],
-                    "asignado": item['monto'],
-                    "gastado": round(float(item['monto'] - item['restante']), 2),
-                    "restante": round(float(item['restante']), 2),
-                    "porcentaje_uso": round(
-                        ((item['monto'] - item['restante']) / item['monto']) * 100, 1
-                    ) if item['monto'] > 0 else 0
+                    "id":            item['categoria'],
+                    "nombre":        item['categoria_nombre'],
+                    "asignado":      float(item['monto']),
+                    "gastado":       float(item['gasto_total']),
+                    "ingresado":     float(item['ingreso_total']),
+                    "restante":      float(item['restante']),
+                    "porcentaje_uso": (
+                        round(((item['gasto_total'] - item['ingreso_total']) / item['monto']) * 100, 1)
+                        if item['monto'] > 0 else 0
+                    )
                 }
                 for item in categorias_data
             ]
